@@ -1,25 +1,213 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GTA VI trophy checklist</title>
+<title>GTA 6 Trophy Guide &amp; Tracker — All 55 PS5 Trophies</title>
+<meta name="description" content="Offline guide and tracker for all 55 PlayStation 5 trophies of Grand Theft Auto VI: checklist with saved progress, a guide to each trophy with its sources, a roadmap to the platinum, and the one missable trophy flagged.">
+<meta name="theme-color" content="#10141a">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <h1>GTA VI trophy checklist</h1>
-  <p id="progress">0 of 55 earned</p>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <h1>GTA 6 Trophy Guide</h1>
+      <p class="brand-sub">Grand Theft Auto VI &middot; PlayStation 5 &middot; All 55 trophies &middot; Data verified 2026-11-19</p>
+    </div>
+    <div class="progress-block" aria-label="Your progress">
+      <svg class="ring" width="64" height="64" viewBox="0 0 64 64" role="img" aria-labelledby="ring-title">
+        <title id="ring-title">Platinum progress</title>
+        <circle class="ring-track" cx="32" cy="32" r="26"></circle>
+        <circle id="progress-ring" class="ring-fill" cx="32" cy="32" r="26"></circle>
+        <text id="progress-pct" class="ring-text" x="32" y="36">0%</text>
+      </svg>
+      <div class="progress-numbers">
+        <p class="progress-count"><span id="progress-earned">0</span> / 55 earned</p>
+        <p id="grade-counts" class="grade-counts"></p>
+        <p id="next-up" class="next-up"></p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <label class="spoiler-switch">
+        <input type="checkbox" id="spoiler-toggle">
+        <span class="switch-track" aria-hidden="true"></span>
+        <span class="switch-label">Hide story spoilers</span>
+      </label>
+      <button type="button" id="export-btn" class="btn">Export progress</button>
+      <button type="button" id="import-btn" class="btn">Import progress</button>
+      <button type="button" id="reset-btn" class="btn btn-quiet">Reset</button>
+    </div>
+  </div>
 </header>
-<div class="controls">
-  <label>Grade <select id="grade"><option value="all">All</option><option value="platinum">Platinum</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select></label>
-  <button id="export" type="button">Export progress</button>
-  <label class="import">Import progress <input id="import" type="file" accept="application/json"></label>
-</div>
-<table>
-  <thead><tr><th>Earned</th><th>Trophy</th><th>Grade</th><th>How to get it</th></tr></thead>
-  <tbody id="rows"></tbody>
-</table>
-<script type="module" src="app.js"></script>
+
+<nav class="tabs" aria-label="Sections">
+  <div class="tabs-inner">
+    <a href="#checklist">Checklist</a>
+    <a href="#roadmap">Roadmap to platinum</a>
+    <a href="#missable">Missable</a>
+    <a href="#about">About &amp; data</a>
+    <span class="tabs-note">No online trophies — all 55 are single-player</span>
+  </div>
+</nav>
+
+<main>
+  <section id="checklist" class="section">
+    <div class="toolbar" role="search">
+      <label class="toolbar-search">
+        <span class="visually-hidden">Search trophies by name</span>
+        <input type="search" id="search-input" placeholder="Search by name…" autocomplete="off">
+      </label>
+      <label class="toolbar-field">
+        <span>Kind</span>
+        <select id="kind-filter">
+          <option value="all">All kinds</option>
+          <option value="story">Story</option>
+          <option value="side">Side</option>
+          <option value="collect">Collectibles</option>
+          <option value="activity">Activities</option>
+          <option value="crime">Crime</option>
+          <option value="money">Money</option>
+          <option value="explore">Exploration</option>
+          <option value="oneoff">One-off</option>
+          <option value="meta">Milestone</option>
+        </select>
+      </label>
+      <label class="toolbar-field">
+        <span>Grade</span>
+        <select id="grade-filter">
+          <option value="all">All grades</option>
+          <option value="platinum">Platinum</option>
+          <option value="gold">Gold</option>
+          <option value="silver">Silver</option>
+          <option value="bronze">Bronze</option>
+        </select>
+      </label>
+      <label class="toolbar-field">
+        <span>Status</span>
+        <select id="status-filter">
+          <option value="all">All</option>
+          <option value="remaining">Remaining</option>
+          <option value="earned">Earned</option>
+        </select>
+      </label>
+      <label class="toolbar-check">
+        <input type="checkbox" id="missable-filter">
+        <span>Missable only</span>
+      </label>
+      <p id="result-count" class="result-count" role="status"></p>
+    </div>
+
+    <p id="load-error" class="notice notice-error" hidden>Could not load the trophy list. The data file is missing or unreadable — check that <code>data/trophies.json</code> sits beside this page and reload.</p>
+
+    <div class="master-detail">
+      <ol id="trophy-list" class="trophy-list" aria-label="Trophy checklist"></ol>
+      <aside id="detail-pane" class="detail-pane" aria-label="Selected trophy guide"></aside>
+    </div>
+
+    <p id="empty-state" class="notice" hidden>No trophies match these filters. Clear the search or widen the filters to see the list again.</p>
+  </section>
+
+  <section id="roadmap" class="section">
+    <h2>Roadmap to the platinum</h2>
+    <p class="section-lead">One playthrough, in this order. Built from the official descriptions: story chapters and missions first, side content as it opens, then the long cleanup counts after the credits.</p>
+    <div class="fact-strip" aria-label="Roadmap facts">
+      <div><strong>~200 hours</strong><span>platinum total</span></div>
+      <div><strong>4 / 10</strong><span>difficulty — long, not hard</span></div>
+      <div><strong>1 playthrough</strong><span>no mission replay, no New Game Plus</span></div>
+      <div><strong>15 + 1 saves</strong><span>manual slots plus autosave</span></div>
+      <div><strong>0 online</strong><span>no difficulty, medal or online trophies</span></div>
+    </div>
+    <ol class="roadmap-phases">
+      <li class="phase">
+        <h3><span class="phase-num">Phase 1</span> Story, Chapters 1–2</h3>
+        <p>Play the story. Chapter 1 opens with Gone Fishing and ends with Paradise Lost; Chapter 2 ends with the second chapter trophy and unlocks both playable characters, which opens most side content. Do the Chapter 1 balcony meditation before Chapter 1 ends — it is the one thing on the list that can slip away (see Missable). Keep a save at the start of each chapter.</p>
+        <p class="phase-trophies">Trophies: Just Like Paradise · Paradise Lost · T**s Ass Drug Money · Trust · Break the Bank · Family Matters</p>
+      </li>
+      <li class="phase">
+        <h3><span class="phase-num">Phase 2</span> Story, Chapters 3–4, plus side strands</h3>
+        <p>Finish Chapters 3 and 4, picking up stranger strands as they appear. Race Against Yago, the Yago street-racing strand in Chapter 3, is time-sensitive — save first. Near the end of Chapter 4 the optional mission That&rsquo;s Where The Money Is unlocks the bank vaults. The Chapter 3 mission Yasmani&rsquo;s Jewelry Jobs hands you the Snap Gun you need for a clean jewelry robbery.</p>
+        <p class="phase-trophies">Trophies: Vice City, Baby! · Top Of The World, Ma · DWNFALL · Hi-Jacked · Snow Storm · Strangers &amp; Freaks (in progress)</p>
+      </li>
+      <li class="phase">
+        <h3><span class="phase-num">Phase 3</span> Final mission, then the open world</h3>
+        <p>Complete the final mission for the gold. Keep one untouched save from just before it. After the credits the 100% checklist appears at Progress &gt; Stats &gt; 100% Completion — everything you already finished counts toward it. From here, everything left on the list stays available.</p>
+        <p class="phase-trophies">Trophies: You Gotta Know When to Get Off · A Long Road (in progress)</p>
+      </li>
+      <li class="phase">
+        <h3><span class="phase-num">Phase 4</span> Side content cleanup</h3>
+        <p>Finish the remaining stranger finales — Andy, Kenton, Billy, Randy, Tyrone — and Bret&rsquo;s hunting questline. None of it is missable; the finales stay open after the story ends. Check the Strangers &amp; Freaks progress counter after each strand: Andy, Billy and Tyrone have their own trophies and do not count toward its 8.</p>
+        <p class="phase-trophies">Trophies: Road to Rehabilitation · This Was No Boat Accident · The Lone Rider · Supply &amp; Demand · Spin On This! · Fair Game · Strangers &amp; Freaks</p>
+      </li>
+      <li class="phase">
+        <h3><span class="phase-num">Phase 5</span> Counts, collectibles, 100%</h3>
+        <p>Grind the long counts: 250 stunts (300 for 100%), 42 Shooting Range gold medals, 100 WAiNK locations, 100 vehicles discovered, 52 areas explored, 18 meditation spots, 3 card sets, 50 Challenges, 8 garage properties, 10 registered vehicles, $250,000 laundered, $100,000 spent. Then 100% completion — and the platinum.</p>
+        <p class="phase-trophies">Trophies: Cunning Stunts · The Shootist · You WAiNKer! · Whip It Good · The Goodtime State · Positive Mental Attitude · Don&rsquo;t Touch My Deck · One Last Thing · Little Boxes · On the Spot · Dime on the Dollar · Treat Yo Self · A Long Road · Vice Got a Price!</p>
+      </li>
+    </ol>
+    <p class="notice">Cheats disable trophies and saving — and none of the 61 cheats work before the credits anyway. Play it straight.</p>
+  </section>
+
+  <section id="missable" class="section">
+    <h2>Missable trophies</h2>
+    <p class="section-lead">Exactly one trophy on this list can be missed. Everything else stays available after the credits, including the side-story finales and the 100% checklist.</p>
+    <article class="missable-card">
+      <div class="missable-head">
+        <span class="grade-badge grade-bronze">Bronze</span>
+        <h3>Positive Mental Attitude</h3>
+        <span class="flag flag-missable">Potentially missable</span>
+      </div>
+      <p class="official-desc">Official description: &ldquo;Meditate at every spot across Leonida.&rdquo; PSN tracks 18 spots across 10 locations.</p>
+      <p>The Chapter 1 balcony meditation — Lucia, at Jason&rsquo;s house, the morning after Down to Earth — disappears after Chapter 1. Do it during Chapter 1 and keep a Chapter 1 save. Spots show as purple icons when you are close, and each outdoor spot counts twice if both characters meditate there. Whether that one balcony spot is strictly required is still unconfirmed.</p>
+      <p class="sources-line">Sources: PSNProfiles; PowerPyx (via GTA Zone); Output Lag; KeenGamer</p>
+      <button type="button" class="btn" data-select="28">Show in the checklist</button>
+    </article>
+    <div class="save-advice">
+      <h3>Save advice</h3>
+      <p>There are 15 manual save slots plus 1 autosave, no mission replay and no New Game Plus. Keep one save at the start of each chapter, one from Chapter 1 with the balcony meditation done, and one untouched save from just before the final mission. Save before any time-sensitive strand (Race Against Yago) and before any one-off stunt (the VCIA plane theft, the Rhino tank).</p>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <h2>About &amp; data</h2>
+    <div class="about-grid">
+      <div>
+        <h3>Verification</h3>
+        <p>All 55 names, descriptions and grades were verified against Exophase and PSNProfiles on 2026-11-19; the two agree on every name, description and grade. PSN progress targets come from PSNProfiles. Rockstar has published no trophy list itself — the list is as PlayStation, Exophase and PSNProfiles publish it at launch.</p>
+        <p>Each trophy&rsquo;s guide is written in this guide&rsquo;s own words from the facts the cited sources report. Five trophies have no confirmed unlock method at launch (In The Beginning…, Capital Offense, Bad Luck, I Guess, The Truth Is Out There, Ten Pin) and are marked unconfirmed in the checklist.</p>
+      </div>
+      <div>
+        <h3>Sources</h3>
+        <ul class="source-list">
+          <li>Exophase — names, descriptions, grades, hidden flags</li>
+          <li>PSNProfiles — names, descriptions, grades, progress targets</li>
+          <li>Output Lag — visible/hidden split, guide details, missable warning, the unconfirmed five</li>
+          <li>KeenGamer — roadmap, 200 hours, missable, two unconfirmed</li>
+          <li>GTA Zone — counts, PowerPyx/GTABase tips, 100% notes</li>
+          <li>CryptoGames — grade breakdown, missable, 100% notes</li>
+          <li>HowToVideoGame — hidden split (12 story + 16 non-story)</li>
+          <li>Of Zen and Computing — roadmap order, story time</li>
+          <li>U7BUY — list, 200 hours</li>
+          <li>Push Square, citing Exophase — count and platinum confirmation</li>
+          <li>PowerPyx and GTABase, via GTA Zone and Output Lag — difficulty, time, missable, tips</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Your progress</h3>
+        <p>Ticking a trophy saves it in this browser (localStorage) and it stays there across reloads. Export downloads your progress as a JSON file; import reads one back. Nothing leaves your machine — this page makes no network request and works with the network off.</p>
+        <p>28 of the 55 trophies are hidden on PlayStation until earned. This guide shows them all, with the spoiler setting hiding story trophies&rsquo; names and descriptions until you earn them.</p>
+      </div>
+    </div>
+    <p class="disclaimer">Unofficial fan guide. Not affiliated with Rockstar Games, Take-Two Interactive or PlayStation. No Rockstar logo, artwork or game images are used here — the look is this guide&rsquo;s own. Trophy names and descriptions are shown as PlayStation publishes them.</p>
+  </section>
+</main>
+
+<footer class="page-footer">
+  <p>GTA 6 Trophy Guide &amp; Tracker — all 55 PS5 trophies, offline. Data verified 2026-11-19.</p>
+</footer>
+
+<input type="file" id="import-file" accept=".json,application/json" hidden>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<script src="app.js"></script>
 </body>
 </html>
