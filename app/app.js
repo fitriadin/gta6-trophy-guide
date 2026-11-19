@@ -121,7 +121,9 @@
     });
     els['grade-counts'].replaceChildren(counts);
 
-    var next = trophies.find(function (t) { return !earned.has(t.id); });
+    // Next up: the first remaining trophy you can actually work on now —
+    // the platinum and 100% completion only land at the very end, so skip them.
+    var next = trophies.find(function (t) { return !earned.has(t.id) && t.kind !== 'meta'; });
     if (els['next-up']) {
       if (!next) {
         els['next-up'].textContent = 'Platinum complete — every trophy earned.';
@@ -249,7 +251,13 @@
 
     var guide = el('div', 'detail-guide');
     guide.appendChild(el('h4', null, 'Guide'));
-    guide.appendChild(el('p', null, trophy.guide));
+    if (masked) {
+      // A masked trophy's guide would give the story away too, so it stays
+      // hidden with the name and description until the trophy is earned.
+      guide.appendChild(el('p', null, 'Guide hidden while the spoiler setting is on. Earn this trophy — or turn the spoiler setting off — to read how to get it.'));
+    } else {
+      guide.appendChild(el('p', null, trophy.guide));
+    }
     wrap.appendChild(guide);
 
     var sources = el('p', 'sources-line');
