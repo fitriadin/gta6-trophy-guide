@@ -1,5 +1,1 @@
-[
-  { "file": "1-checklist.jpg", "path": "/", "viewport": { "width": 1280, "height": 800 } },
-  { "file": "2-silver.jpg", "path": "/", "grade": "silver", "viewport": { "width": 1280, "height": 800 } },
-  { "file": "3-bronze.jpg", "path": "/", "grade": "bronze", "scroll": 1400, "viewport": { "width": 1280, "height": 800 } }
-]
+[{"file":"1-checklist.jpg","notes":"Cover: progress ring (13/55 earned) and grade counts, filters, checklist, and the missable trophy Positive Mental Attitude selected in the detail pane with its guide and named sources.","path":"/","viewport":{"height":800,"width":1280}},{"file":"2-roadmap.jpg","notes":"Roadmap to the platinum: fact strip (~200 hours, 4/10, one playthrough) and phases 1-3 with their trophies.","path":"/#roadmap","viewport":{"height":800,"width":1280}},{"file":"3-spoiler.jpg","notes":"Spoiler mode on: the toggle is active, unearned story trophies are blurred in the list and in the detail pane, and the masked trophy's guide stays hidden until earned.","path":"/","viewport":{"height":800,"width":1280}},{"file":"4-about.jpg","notes":"About and data: verification note (all 55 names/descriptions/grades verified against Exophase + PSNProfiles, 2026-11-19), full source list, and how progress is stored.","path":"/#about","viewport":{"height":800,"width":1280}}]
